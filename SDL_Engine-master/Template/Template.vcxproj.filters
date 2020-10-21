@@ -135,6 +135,12 @@
     <ClCompile Include="..\src\ThermalDetonator.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Ramp.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lootbox.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -279,6 +285,12 @@
       <Filter>Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ThermalDetonator.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Ramp.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lootbox.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
   </ItemGroup>

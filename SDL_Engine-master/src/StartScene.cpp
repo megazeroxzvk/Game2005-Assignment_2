@@ -46,22 +46,22 @@ void StartScene::handleEvents()
 void StartScene::start()
 {
 
-	m_pBackground = new Background("../Assets/textures/start_screen.png", "background_startscene");
+	m_pBackground = new Background("../Assets/textures/start_screen.jpg", "background_startscene");
 	addChild(m_pBackground);
-	const SDL_Color white = { 255, 255, 255, 255 };
+	const SDL_Color cyan = {125, 200, 255, 255 };
 	/*m_pStartLabel = new Label("START SCENE", "Consolas", 80, white, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);*/
 
-	m_pAngryWookie = new Label("angry wookie", "starwars", 80, white, glm::vec2(400.0f, 40.0f));
+	m_pAngryWookie = new Label("FALL OF LOOTBOX", "gamer", 80, cyan, glm::vec2(400.0f, 60.0f));
 	m_pAngryWookie->setParent(this);
 	addChild(m_pAngryWookie);
 
-	m_pTeamMember1 = new Label("Vineet Kumar - 101273532", "Consolas", 40, white, glm::vec2(300.0f, 140.0f));
+	m_pTeamMember1 = new Label("VINEET KUMAR - 101273532", "Consolas", 40, cyan, glm::vec2(300.0f, 250.0f));
 	m_pTeamMember1->setParent(this);
 	addChild(m_pTeamMember1);
 
-	m_pTeamMember2 = new Label("Raquel Andre Da Costa - 101247804", "Consolas", 40, white, glm::vec2(400.0f, 180.0f));
+	m_pTeamMember2 = new Label("RAQUEL ANDRE DA COSTA - 101247804", "Consolas", 40, cyan, glm::vec2(400.0f, 300.0f));
 	m_pTeamMember2->setParent(this);
 	addChild(m_pTeamMember2);
 

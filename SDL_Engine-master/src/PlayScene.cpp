@@ -33,23 +33,14 @@ void PlayScene::update()
 	updateDisplayList();
 	/*std::cout << "Distance Covered = " << m_pThermalDetonator->getDistance() << std::endl;
 	std::cout << "Time = " << m_pThermalDetonator->getTime() << std::endl;*/
-	m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)) + " m");
+	/*m_pSpeedLabel->setText("Y Velocity = " + std::to_string(fabs(m_pThermalDetonator->getRigidBody()->velocity.y)) + " m");
 	m_pAngleLabel->setText("Angle = " + std::to_string(m_pThermalDetonator->getAngle()) + " deg");
 	m_pTimeLabel->setText("Time = " + std::to_string(m_pThermalDetonator->getTime()) + " sec");
 	m_pDistanceLabel->setText("Distance = " + std::to_string(m_pThermalDetonator->getDistance()) + " m");
 	m_pEnemyLocationLabel->setText("Enemy Location(x) = " + std::to_string(m_pStormTroopers->getTransform()->position.x));
-	m_pLandingPositionLabel->setText("Landing Location(x) = " + std::to_string(m_pThermalDetonator->getLandingLocation()));
-
-	//if(m_locked)
-	//{
-	//	float landing_range = m_pStormTroopers->getTransform()->position.x - m_pThermalDetonator->getResetPositon().x;		//get R
-	//	//m_pThermalDetonator->setTime(m_pThermalDetonator->getAngle());			//get t
-	//	//R = V * cosOfTheta * t
-	//	//V = R/cosOfTheta * t
-	//	m_pThermalDetonator->setTime(m_pThermalDetonator->getAngle());
-	//	m_pThermalDetonator->setSpeed(landing_range / (cos(Util::Deg2Rad * m_pThermalDetonator->getAngle() * m_pThermalDetonator->getTime())));
-	//	std::cout << "speed = " << m_pThermalDetonator->getSpeed()<< std::endl;
-	//}
+	m_pLandingPositionLabel->setText("Landing Location(x) = " + std::to_string(m_pThermalDetonator->getLandingLocation()));*/
+	//
+	//std::cout << "height of lootbox= " << m_pLootbox->getHeight() << std::endl;
 }
 
 void PlayScene::clean()
@@ -138,25 +129,35 @@ void PlayScene::handleEvents()
 void PlayScene::start()
 {
 	//Set Background Tatooine
-	m_pBackground = new Background("../Assets/textures/Tatooine.png","background_playscene");
+	m_pBackground = new Background("../Assets/textures/owbkg.jpg","background_playscene");
 	addChild(m_pBackground);
 	
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 
+	//Ramp
+	m_pRamp = new Ramp();
+	addChild(m_pRamp);
+
+	//Lootbox
+	m_pLootbox = new Lootbox();
+	addChild(m_pLootbox);
+	m_pLootbox->setPosition(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
+	m_pLootbox->setAcceleration({ 0 * SCALE ,0 * SCALE });
+	
 	//Wookie
-	m_pWookie = new Wookie();
-	addChild(m_pWookie);
+	/*m_pWookie = new Wookie();
+	addChild(m_pWookie);*/
 
 	//Stormtroopers
-	m_pStormTroopers = new StormTroopers();
-	addChild(m_pStormTroopers);
+	/*m_pStormTroopers = new StormTroopers();
+	addChild(m_pStormTroopers);*/
 
 	//Thermal Detonator
-	m_pThermalDetonator = new ThermalDetonator();
+	/*m_pThermalDetonator = new ThermalDetonator();
 	m_pThermalDetonator->setAngle(15.88963282f);
 	m_pThermalDetonator->setSpeed(95.0f);
-	addChild(m_pThermalDetonator);
+	addChild(m_pThermalDetonator);*/
 	
 	// Plane Sprite
 	/*m_pPlaneSprite = new Plane();
@@ -178,11 +179,12 @@ void PlayScene::start()
 	m_pThrowButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pThrowButton->setActive(false);
+		m_pLootbox->setAngle(m_pRamp->m_getAngle());
 		//TheGame::Instance()->changeSceneState(START_SCENE);
-		m_pThermalDetonator->m_kickoff = true;
-		m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
-		m_pThermalDetonator->setAngle(m_pThermalDetonator->getAngle());
-		m_pThermalDetonator->setSpeed(m_pThermalDetonator->getSpeed());	
+		//m_pThermalDetonator->m_kickoff = true;
+		//m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
+		//m_pThermalDetonator->setAngle(m_pThermalDetonator->getAngle());
+		//m_pThermalDetonator->setSpeed(m_pThermalDetonator->getSpeed());	
 	});
 
 	m_pThrowButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -203,11 +205,11 @@ void PlayScene::start()
 	{
 		m_pResetButton->setActive(false);
 		//TheGame::Instance()->changeSceneState(END_SCENE);
-		m_pThermalDetonator->m_kickoff = false;
+		/*m_pThermalDetonator->m_kickoff = false;
 		m_pThermalDetonator->setAngle(m_pThermalDetonator->getResetAngle());
 		m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
 		m_pThermalDetonator->setSpeed(m_pThermalDetonator->getResetSpeed());
-		m_pStormTroopers->getTransform()->position.x = m_pStormTroopers->getResetPosition();
+		m_pStormTroopers->getTransform()->position.x = m_pStormTroopers->getResetPosition();*/
 		
 	});
 
@@ -284,25 +286,25 @@ void PlayScene::GUI_Function() const
 	}*/
 	
 	
-	slider_position = (int)m_pStormTroopers->getTransform()->position.x;
-	if (ImGui::SliderInt("Enemy Location", &slider_position, 200.0f, 725.0f))
-	{
-		m_pStormTroopers->getTransform()->position.x = slider_position;
-	}
+	//slider_position = (int)m_pStormTroopers->getTransform()->position.x;
+	//if (ImGui::SliderInt("Enemy Location", &slider_position, 200.0f, 725.0f))
+	//{
+	//	m_pStormTroopers->getTransform()->position.x = slider_position;
+	//}
 
-	slider_speed = m_pThermalDetonator->getSpeed();
+	/*slider_speed = m_pThermalDetonator->getSpeed();
 	if (ImGui::SliderFloat("Velocity", &slider_speed, 50.0f, 500.0f))
 	{
 		m_pThermalDetonator->setSpeed(slider_speed);
-	}
+	}*/
 
 	//if(!m_locked)
 	//{
-		slider_angle = m_pThermalDetonator->getAngle();
+		/*slider_angle = m_pThermalDetonator->getAngle();
 		if (ImGui::SliderFloat("Angle", &slider_angle, 1.0f, 89.9f))
 		{
 			m_pThermalDetonator->setAngle(slider_angle);
-		}
+		}*/
 	/*}*/
 	
 	/*static float float3[3] = { 0.0f, 1.0f, 1.5f };
@@ -313,6 +315,18 @@ void PlayScene::GUI_Function() const
 		std::cout << float3[2] << std::endl;
 		std::cout << "---------------------------\n";
 	}*/
+
+	static float width = { 4.0f};
+	if (ImGui::SliderFloat("Ramp Width", &width, 4.0f, 15.0f))
+	{
+		m_pRamp->setPositionBase2({ m_pRamp->getPositionBase1().x + (width * SCALE),m_pRamp->getPositionBase2().y });
+	}
+
+	static float height = { 3.0f };
+	if (ImGui::SliderFloat("Ramp Height", &height, 3.0f, 15.0f))
+	{
+		m_pRamp->setPositionTop1({ m_pRamp->getPositionTop1().x, m_pRamp->getPositionBase1().y - (height * SCALE) });
+	}
 	
 	ImGui::End();
 	ImGui::EndFrame();

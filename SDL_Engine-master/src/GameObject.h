@@ -9,7 +9,6 @@
 // enums
 #include "GameObjectType.h"
 
-
 class GameObject {
 public:
 	GameObject();
@@ -40,6 +39,8 @@ public:
 
 	void setEnabled(bool state);
 	bool isEnabled() const;
+
+	const float SCALE  = 30.0f;
 
 private:
 	// transform component

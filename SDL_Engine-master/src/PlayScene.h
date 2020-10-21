@@ -10,6 +10,8 @@
 #include "Ship.h"
 #include "Wookie.h"
 #include "Label.h"
+#include "Ramp.h"
+#include "Lootbox.h"
 #include "ThermalDetonator.h"
 #include "StormTroopers.h"
 
@@ -42,13 +44,16 @@ private:
 	glm::vec2 m_mousePosition;
 
 	// Sprites
-	Wookie* m_pWookie;
-	ThermalDetonator* m_pThermalDetonator;
-	StormTroopers* m_pStormTroopers;
+	Ramp* m_pRamp;
+	Lootbox* m_pLootbox;
+	//Wookie* m_pWookie;
+	//ThermalDetonator* m_pThermalDetonator;
+	//StormTroopers* m_pStormTroopers;
 	//Plane* m_pPlaneSprite;
 	//Player* m_pPlayer;
 	//Ship* m_pShip;
 	//bool m_playerFacingRight;
+	
 
 	// UI Items
 	Button* m_pThrowButton;
