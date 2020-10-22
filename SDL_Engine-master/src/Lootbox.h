@@ -22,14 +22,40 @@ public:
 	void setAngle(float angle);
 	void setAcceleration(glm::vec2 acc);
 	
+	float getDistanceTravelledRamp(glm::vec2, glm::vec2);
+	float getDistanceTravelledFrictionSurface(glm::vec2, glm::vec2);
+
+	void setNecessaryValues(float angle,float hypotenuse);
+
+	void setMass(float mass);
+	float getMass();
+	bool startSimulation = false;
+	void reset(float,float);
+
+	void setCoefficientOfFriction(float val);
+	float getCoefficientOfFriction();
+	
 private:
+	//physics !!!!!!!!!!!!
 	float m_angle;
 	SDL_Point bottomLeft = { 0, 0 };
 	SDL_Point bottomRight = { 0,0 };
 	SDL_Rect destRect;
+	float m_rampHypotenuse = 0.0f;;
 
+	//for now we keep this constant
 	float m_mass = 12.8f;
-	float m_force = 75.2638f;
+	glm::vec2 m_force = {0,0};
+	float m_coefficient = 0;
+
+	
+	glm::vec2 m_initialPosition = { 0,0 };
+	float m_distanceTravelledRamp = 0;
+	float m_distanceTravelledFrictionSurface = 0;
+
+	bool m_reachedRampBase = false;
+	glm::vec2 m_rampBasePosition = {0,0};
+	glm::vec2 m_frictionSurfaceEndPosition = { 0,0 };
 	
 };
 

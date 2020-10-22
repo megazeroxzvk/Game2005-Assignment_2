@@ -29,8 +29,10 @@ void Ramp::draw()
 
 void Ramp::update()
 {
+	//setNecessaryValues();
 	m_base = positionBase2.x - positionBase1.x;
 	m_height = positionBase1.y - positionTop1.y;
+
 	m_hypotenuse = sqrt((m_base * m_base) + (m_height * m_height));
 	m_angle = asin(m_height / m_hypotenuse);
 	//std::cout << "base = " << m_base << "\theight = " << m_height << "\thypo = " << m_hypotenuse << 
@@ -90,6 +92,21 @@ float Ramp::m_getHeight()
 float Ramp::m_getHypotenuse()
 {
 	return m_hypotenuse;
+}
+
+void Ramp::setNecessaryValues()
+{
+	m_base = positionBase2.x - positionBase1.x;
+	//std::cout << "base = " << m_base << std::endl;
+	m_height = positionBase1.y - positionTop1.y;
+	m_hypotenuse = sqrt((m_base * m_base) + (m_height * m_height));
+	m_angle = asin(m_height / m_hypotenuse);
+}
+
+void Ramp::reset()
+{
+	positionBase2 = { 170,550 };
+	positionTop1 = { 50,460 };
 }
 
 void Ramp::drawRamp()

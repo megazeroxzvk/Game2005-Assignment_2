@@ -68,6 +68,8 @@ private:
 	Label* m_pEnemyLocationLabel;
 	Label* m_pDistanceLabel;
 
+	mutable bool reset = false;
+
 	
 
 	// Background

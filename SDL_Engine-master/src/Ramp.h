@@ -29,6 +29,8 @@ public:
 	float m_getBase();
 	float m_getHeight();
 	float m_getHypotenuse();
+	void setNecessaryValues();
+	void reset();
 	
 private:
 	glm::vec2 positionBase1 = { 0,0 };

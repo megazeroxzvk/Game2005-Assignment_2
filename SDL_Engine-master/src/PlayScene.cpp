@@ -143,7 +143,7 @@ void PlayScene::start()
 	m_pLootbox = new Lootbox();
 	addChild(m_pLootbox);
 	m_pLootbox->setPosition(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
-	m_pLootbox->setAcceleration({ 0 * SCALE ,0 * SCALE });
+	//m_pLootbox->setAcceleration({ 7.8400 * SCALE , 5.8799 * SCALE });
 	
 	//Wookie
 	/*m_pWookie = new Wookie();
@@ -179,7 +179,10 @@ void PlayScene::start()
 	m_pThrowButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pThrowButton->setActive(false);
-		m_pLootbox->setAngle(m_pRamp->m_getAngle());
+		m_pRamp->setNecessaryValues();
+		m_pLootbox->setNecessaryValues(m_pRamp->m_getAngle(),m_pRamp->m_getHypotenuse());
+		m_pLootbox->startSimulation = true;
+		//std::cout << m_pLootbox->getMass()<< std::endl;
 		//TheGame::Instance()->changeSceneState(START_SCENE);
 		//m_pThermalDetonator->m_kickoff = true;
 		//m_pThermalDetonator->setPosition(m_pThermalDetonator->getResetPositon());
@@ -204,6 +207,9 @@ void PlayScene::start()
 	m_pResetButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pResetButton->setActive(false);
+		m_pLootbox->startSimulation = false;
+		m_pRamp->reset();
+		m_pLootbox->reset(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
 		//TheGame::Instance()->changeSceneState(END_SCENE);
 		/*m_pThermalDetonator->m_kickoff = false;
 		m_pThermalDetonator->setAngle(m_pThermalDetonator->getResetAngle());
@@ -317,17 +323,41 @@ void PlayScene::GUI_Function() const
 	}*/
 
 	static float width = { 4.0f};
-	if (ImGui::SliderFloat("Ramp Width", &width, 4.0f, 15.0f))
+	if (ImGui::SliderFloat("Ramp Width (in meters)", &width, 4.0f, 15.0f))
 	{
 		m_pRamp->setPositionBase2({ m_pRamp->getPositionBase1().x + (width * SCALE),m_pRamp->getPositionBase2().y });
+		m_pLootbox->startSimulation = false;
+		m_pLootbox->reset(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
 	}
 
 	static float height = { 3.0f };
-	if (ImGui::SliderFloat("Ramp Height", &height, 3.0f, 15.0f))
+	if (ImGui::SliderFloat("Ramp Height (in meters)", &height, 3.0f, 15.0f))
 	{
 		m_pRamp->setPositionTop1({ m_pRamp->getPositionTop1().x, m_pRamp->getPositionBase1().y - (height * SCALE) });
+		m_pLootbox->startSimulation = false;
+		m_pLootbox->reset(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
 	}
-	
+
+	static float mass = { 12.8f };
+	if (ImGui::SliderFloat("Mass (in Kilograms)", &mass, 10.0f, 20.0f))
+	{
+		m_pLootbox->startSimulation = false;
+		m_pLootbox->reset(m_pRamp->getPositionTop1().x, m_pRamp->getPositionTop1().y - m_pLootbox->getHeight());
+	}
+
+	static float coefficient = { 0.42 };
+	if (ImGui::SliderFloat("Coefficient of Friction", &coefficient, 0.05f, 4.0f))
+	{
+		m_pLootbox->setCoefficientOfFriction(coefficient);
+	}
+
+	if(reset)
+	{
+		width = 4.0f;
+		height = 3.0f;
+		mass = 12.8f;
+		reset = false;
+	}
 	ImGui::End();
 	ImGui::EndFrame();
 
