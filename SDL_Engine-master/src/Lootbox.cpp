@@ -55,7 +55,7 @@ void Lootbox::update()
 	bottomRight = { destRect.w, destRect.h };
 
 	//simulation start
-	if(startSimulation)
+	if(startSimulation && !reachedLocation)
 	{
 		//Friction Surface	__
 		if ( getTransform()->position.y  > 499.0f)
@@ -64,11 +64,7 @@ void Lootbox::update()
 			if(!m_reachedRampBase)
 			{
 				getRigidBody()->velocity.x = sqrt(2 * getRigidBody()->acceleration.y * m_rampHypotenuse);
-				std::cout << "Ramp Distance = " << getDistanceTravelledRamp(m_initialPosition, getTransform()->position) << std::endl;
-				std::cout << "Acceleration X = " << getRigidBody()->acceleration.x / SCALE  << std::endl;
-				std::cout << "Acceleration Y = " << getRigidBody()->acceleration.y / SCALE  << std::endl;
-				std::cout << "Velocity Y = " << getRigidBody()->velocity.y / SCALE  << std::endl;
-				std::cout << "Velocity X = " << getRigidBody()->velocity.x / SCALE  << std::endl;
+				m_distanceTravelledRamp = getDistanceTravelledRamp(m_initialPosition, getTransform()->position);
 				m_rampBasePosition = getTransform()->position;
 				m_reachedRampBase = true;
 			}
@@ -76,11 +72,14 @@ void Lootbox::update()
 			getRigidBody()->velocity.x += (-gravity.y * SCALE) * deltaTime * m_coefficient;
 			getTransform()->position.x += getRigidBody()->velocity.x * deltaTime;
 			
+			
 			if(getRigidBody()->velocity.x <= 0.0f)
 			{
-				std::cout << "Friction Distance Travelled = " << getDistanceTravelledFrictionSurface(m_rampBasePosition, getTransform()->position) << std::endl;
-				startSimulation = false;
+				getRigidBody()->velocity.x = 0.0f;
+				m_distanceTravelledFrictionSurface = getDistanceTravelledFrictionSurface(m_rampBasePosition, getTransform()->position);
+				reachedLocation = true;
 			}
+			m_distanceTravelledFrictionSurface = getDistanceTravelledFrictionSurface(m_rampBasePosition, getTransform()->position);
 			
 		}
 		else		//Frictionless Ramp 
@@ -91,8 +90,7 @@ void Lootbox::update()
 			{
 				m_angle--;
 			}
-			/*std::cout << "velocity at ramp x = " << getRigidBody()->velocity.x / SCALE
-				<< "velocity at ramp y = " << getRigidBody()->velocity.y / SCALE << std::endl;*/
+			m_distanceTravelledRamp = getDistanceTravelledRamp(m_initialPosition, getTransform()->position);
 		}
 	}
 }
@@ -152,12 +150,58 @@ float Lootbox::getDistanceTravelledFrictionSurface(glm::vec2 position1, glm::vec
 void Lootbox::setNecessaryValues(float angle,float hypotenuse)
 {
 	setAngle(angle);
-	std::cout << "Angle = " << angle << std::endl;
 	m_rampHypotenuse = hypotenuse;
 	m_force.x = m_mass * gravity.y * (sin(Util::Deg2Rad * m_angle)) * SCALE;
 	m_force.y = m_mass * gravity.y * (cos(Util::Deg2Rad * m_angle)) * SCALE;
 	//********************* magical numbers ********************/
 	setAcceleration({ (m_force.y / m_mass), (m_force.x / m_mass)});
+
+	//setting total time
+	float vel1 = 0.0f;
+	float time1 = 0.0f;
+	float acc1 = 0.0f;
+	vel1 = sqrt(2 * getRigidBody()->acceleration.y * m_rampHypotenuse);
+	vel1 /= SCALE;
+	velocityLabel = vel1;
+}
+
+void Lootbox::reset(float x, float y)
+{
+	setMass(12.8f);
+	setPosition(x, y);
+	setCoefficientOfFriction(0.42f);
+	m_angle = 0.0f;
+	getRigidBody()->velocity = { 0,0 };
+	getRigidBody()->acceleration = { 0,0 };
+	reachedLocation = false;
+	m_reachedRampBase = false;
+	m_distanceTravelledRamp = 0.0f;
+	m_distanceTravelledFrictionSurface = 0.0f;
+	m_force = { 0.0,0.0 };
+}
+
+void Lootbox::resetPosition(float x, float y)
+{
+	setPosition(x, y);
+	m_angle = 0.0f;
+	getRigidBody()->velocity = { 0,0 };
+	getRigidBody()->acceleration = { 0,0 };
+	reachedLocation = false;
+	m_reachedRampBase = false;
+	m_distanceTravelledRamp = 0.0f;
+	m_distanceTravelledFrictionSurface = 0.0f;
+	m_force = { 0.0,0.0 };
+}
+
+
+glm::vec2 Lootbox::getForce()
+{
+	return m_force;
+}
+
+float Lootbox::getDistance()
+{
+	return m_distanceTravelledFrictionSurface + m_distanceTravelledRamp;
 }
 
 void Lootbox::setMass(float mass)
@@ -170,16 +214,6 @@ float Lootbox::getMass()
 	return m_mass;
 }
 
-void Lootbox::reset(float x, float y)
-{
-	setMass(12.8f);
-	setPosition(x,y);
-	setCoefficientOfFriction(0.42f);
-	m_angle = 0.0f;
-	getRigidBody()->velocity = { 0,0 };
-	getRigidBody()->acceleration = { 0,0 };
-	
-}
 
 void Lootbox::setCoefficientOfFriction(float val)
 {
@@ -190,3 +224,15 @@ float Lootbox::getCoefficientOfFriction()
 {
 	return m_coefficient;
 }
+
+void Lootbox::setReachedLocation(bool reachedLocation)
+{
+	this->reachedLocation = reachedLocation;
+}
+
+bool Lootbox::getReachedLocation()
+{
+	return reachedLocation;
+}
+
+

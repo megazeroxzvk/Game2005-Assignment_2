@@ -31,9 +31,18 @@ public:
 	float getMass();
 	bool startSimulation = false;
 	void reset(float,float);
+	void resetPosition(float x, float y);
 
 	void setCoefficientOfFriction(float val);
 	float getCoefficientOfFriction();
+
+	void setReachedLocation(bool);
+	bool getReachedLocation();
+
+	glm::vec2 getForce();
+
+	float velocityLabel = 0.0f;
+	float getDistance();
 	
 private:
 	//physics !!!!!!!!!!!!
@@ -46,12 +55,12 @@ private:
 	//for now we keep this constant
 	float m_mass = 12.8f;
 	glm::vec2 m_force = {0,0};
-	float m_coefficient = 0;
-
+	float m_coefficient = 0.42f;
 	
 	glm::vec2 m_initialPosition = { 0,0 };
 	float m_distanceTravelledRamp = 0;
 	float m_distanceTravelledFrictionSurface = 0;
+	bool reachedLocation = false;
 
 	bool m_reachedRampBase = false;
 	glm::vec2 m_rampBasePosition = {0,0};

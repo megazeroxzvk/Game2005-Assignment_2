@@ -46,14 +46,6 @@ private:
 	// Sprites
 	Ramp* m_pRamp;
 	Lootbox* m_pLootbox;
-	//Wookie* m_pWookie;
-	//ThermalDetonator* m_pThermalDetonator;
-	//StormTroopers* m_pStormTroopers;
-	//Plane* m_pPlaneSprite;
-	//Player* m_pPlayer;
-	//Ship* m_pShip;
-	//bool m_playerFacingRight;
-	
 
 	// UI Items
 	Button* m_pThrowButton;
@@ -61,12 +53,14 @@ private:
 	Label* m_pInstructionsLabel;
 
 	//Status Labels
-	Label* m_pSpeedLabel;
+	Label* m_pVelocityLabel;
 	Label* m_pAngleLabel;
-	Label* m_pTimeLabel;
-	Label* m_pLandingPositionLabel;
-	Label* m_pEnemyLocationLabel;
-	Label* m_pDistanceLabel;
+	Label* m_pTotalDistance;
+	Label* m_pAccelerationLabel;
+	Label* m_pMass;
+	Label* m_pForce;
+	Label* m_pPPM;
+
 
 	mutable bool reset = false;
 
